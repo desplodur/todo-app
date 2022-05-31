@@ -9,21 +9,25 @@ function App() {
       id: nanoid(),
       task: "Do React Exercise",
       status: false,
+      isArchived: false,
     },
     {
       id: nanoid(),
       task: "Feed the dog",
       status: true,
+      isArchived: false,
     },
     {
       id: nanoid(),
       task: "Go running",
       status: false,
+      isArchived: false,
     },
     {
       id: nanoid(),
       task: "Cook Dinner",
       status: true,
+      isArchived: false,
     },
   ]);
 
@@ -33,18 +37,23 @@ function App() {
       id: nanoid(),
       task: event.target.taskText.value,
       status: false,
+      isArchived: false,
     };
     const newToDoList = [...toDoList, newTodo];
     setToDo(newToDoList);
   };
 
-  function deleteToDo(id) {
+  function deleteOrArchive(id) {
     const myIndex = toDoList.findIndex((todo) => {
       return todo.id === id;
     });
     const newToDoList = [...toDoList];
-    newToDoList.splice(myIndex, 1);
-    setToDo(newToDoList);
+    if (newToDoList[myIndex].status) {
+      newToDoList.splice(myIndex, 1);
+      setToDo(newToDoList);
+    } else {
+      console.log("is Archived");
+    }
   }
 
   function changeStatus(id) {
@@ -77,8 +86,8 @@ function App() {
               changeStatus={() => {
                 changeStatus(todo.id);
               }}
-              deleteToDo={() => {
-                deleteToDo(todo.id);
+              deleteOrArchive={() => {
+                deleteOrArchive(todo.id);
               }}
             />
           );
