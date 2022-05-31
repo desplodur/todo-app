@@ -9,25 +9,21 @@ function App() {
       id: nanoid(),
       task: "Do React Exercise",
       status: false,
-      archived: false,
     },
     {
       id: nanoid(),
       task: "Feed the dog",
       status: true,
-      archived: false,
     },
     {
       id: nanoid(),
       task: "Go running",
       status: false,
-      archived: false,
     },
     {
       id: nanoid(),
       task: "Cook Dinner",
       status: true,
-      archived: false,
     },
   ]);
 
@@ -37,7 +33,6 @@ function App() {
       id: nanoid(),
       task: event.target.taskText.value,
       status: false,
-      archived: false,
     };
     const newToDoList = [...toDoList, newTodo];
     setToDo(newToDoList);
@@ -79,7 +74,6 @@ function App() {
               id={todo.id}
               taskProp={todo.task}
               statusProp={todo.status}
-              archivedProp={todo.archived}
               changeStatus={() => {
                 changeStatus(todo.id);
               }}
