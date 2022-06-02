@@ -54,7 +54,7 @@ function App() {
     const newTodo = {
       id: nanoid(),
       task: event.target.taskText.value,
-      status: false,
+      status: true,
       isArchived: false,
     };
     const newToDoList = [...toDoList, newTodo];

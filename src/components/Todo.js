@@ -11,13 +11,16 @@ function Todo({
   return (
     <ToDoCard status={statusProp}>
       <Task>{taskProp}</Task>
-      <p>{id}</p>
-      <Button onClick={changeStatus}>
-        {statusProp ? "complete" : "uncomplete"}
-      </Button>
-      <Button onClick={deleteOrArchive}>
-        {statusProp ? "delete" : "archive"}
-      </Button>
+      {archiveProp ? null : (
+        <>
+          <Button onClick={changeStatus}>
+            {statusProp ? "complete" : "uncomplete"}
+          </Button>
+          <Button onClick={deleteOrArchive}>
+            {statusProp ? "delete" : "archive"}
+          </Button>
+        </>
+      )}
     </ToDoCard>
   );
 }
