@@ -1,10 +1,14 @@
 import "./App.css";
 import Todo from "./components/Todo";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
+import { Routes, Route, NavLink } from "react-router-dom";
 
 function App() {
-  const [toDoList, setToDo] = useState([
+  const [toDoList, setToDo] = useState(
+    JSON.parse(localStorage.getItem("todos"))
+
+    /*[
     {
       id: nanoid(),
       task: "Do React Exercise",
@@ -29,7 +33,15 @@ function App() {
       status: true,
       isArchived: false,
     },
-  ]);
+  ]*/
+  );
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(toDoList));
+  });
+
+  const [randomTodo, setRandomTodo] = useState(
+    toDoList[Math.floor(Math.random() * toDoList.length)]
+  );
 
   const createNewTodo = (event) => {
     event.preventDefault();
@@ -52,16 +64,18 @@ function App() {
       newToDoList.splice(myIndex, 1);
       setToDo(newToDoList);
     } else {
-      console.log("is Archived");
+      newToDoList[myIndex].isArchived = !toDoList[myIndex].isArchived;
+      setToDo(newToDoList);
     }
   }
 
   function changeStatus(id) {
-    const myIndex = toDoList.findIndex((todo) => {
-      return todo.id === id;
+    const newToDoList = toDoList.map((todo) => {
+      if (id === todo.id) {
+        return { ...todo, status: !todo.status };
+      }
+      return todo;
     });
-    const newToDoList = [...toDoList];
-    newToDoList[myIndex].status = !toDoList[myIndex].status;
     setToDo(newToDoList);
   }
 
@@ -69,30 +83,108 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>ToDo List</h1>
-        <form onSubmit={createNewTodo}>
-          <label>new ToDo:</label>
-          <input name="taskText" type="text"></input>
-          <button type="submit">Create a new Task</button>
-        </form>
       </header>
-      <main>
-        {toDoList.map((todo) => {
-          return (
-            <Todo
-              key={todo.id}
-              id={todo.id}
-              taskProp={todo.task}
-              statusProp={todo.status}
-              changeStatus={() => {
-                changeStatus(todo.id);
-              }}
-              deleteOrArchive={() => {
-                deleteOrArchive(todo.id);
-              }}
-            />
-          );
-        })}
-      </main>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <form onSubmit={createNewTodo}>
+                <label>new ToDo:</label>
+                <input name="taskText" type="text"></input>
+                <button type="submit">Create a new Task</button>
+              </form>
+              {toDoList
+                .filter((todo) => !todo.isArchived)
+                .map((todo) => {
+                  return (
+                    <Todo
+                      key={todo.id}
+                      id={todo.id}
+                      taskProp={todo.task}
+                      statusProp={todo.status}
+                      archiveProp={todo.isArchived}
+                      changeStatus={() => {
+                        changeStatus(todo.id);
+                      }}
+                      deleteOrArchive={() => {
+                        deleteOrArchive(todo.id);
+                      }}
+                    />
+                  );
+                })}
+            </>
+          }
+        />
+        <Route
+          path="/favorites"
+          element={
+            <>
+              {toDoList
+                .filter((todo) => todo.isArchived)
+                .map((todo) => {
+                  return (
+                    <Todo
+                      key={todo.id}
+                      id={todo.id}
+                      taskProp={todo.task}
+                      statusProp={todo.status}
+                      archiveProp={todo.isArchived}
+                      changeStatus={() => {
+                        changeStatus(todo.id);
+                      }}
+                      deleteOrArchive={() => {
+                        deleteOrArchive(todo.id);
+                      }}
+                    />
+                  );
+                })}
+            </>
+          }
+        />
+
+        <Route
+          path="/random"
+          element={
+            <>
+              <p>Your Random Todo is:</p>
+              <button
+                onClick={() => {
+                  setRandomTodo(
+                    toDoList[Math.floor(Math.random() * toDoList.length)]
+                  );
+                }}
+              >
+                Shuffle
+              </button>
+              <Todo
+                key={randomTodo.id}
+                id={randomTodo.id}
+                taskProp={randomTodo.task}
+                statusProp={randomTodo.status}
+                archiveProp={randomTodo.isArchived}
+                changeStatus={() => {
+                  changeStatus(randomTodo.id);
+                }}
+                deleteOrArchive={() => {
+                  deleteOrArchive(randomTodo.id);
+                }}
+              />
+            </>
+          }
+        />
+      </Routes>
+      <footer>
+        <NavLink className="navLink" to="/">
+          Home
+        </NavLink>
+        <NavLink className="navLink" to="/favorites">
+          Favorites
+        </NavLink>
+        <NavLink className="navLink" to="/random">
+          Random
+        </NavLink>
+      </footer>
     </div>
   );
 }
