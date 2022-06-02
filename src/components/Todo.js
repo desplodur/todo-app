@@ -11,16 +11,13 @@ function Todo({
   return (
     <ToDoCard status={statusProp}>
       <Task>{taskProp}</Task>
-      {archiveProp ? null : (
-        <>
-          <Button onClick={changeStatus}>
-            {statusProp ? "uncomplete" : "complete"}
-          </Button>
-          <Button onClick={deleteOrArchive}>
-            {statusProp ? "archive" : "delete"}
-          </Button>
-        </>
-      )}
+      <p>{id}</p>
+      <Button onClick={changeStatus}>
+        {statusProp ? "complete" : "uncomplete"}
+      </Button>
+      <Button onClick={deleteOrArchive}>
+        {statusProp ? "delete" : "archive"}
+      </Button>
     </ToDoCard>
   );
 }
@@ -39,6 +36,6 @@ const Button = styled.button`
 `;
 
 const ToDoCard = styled.article`
-  background-color: ${(props) => (props.status === true ? "green" : "red")};
+  background-color: ${(props) => (props.status === true ? "red" : "green")};
 `;
 /** */
