@@ -1,7 +1,5 @@
 import styled from "styled-components";
 
-function buttons({ statusProp }) {}
-
 function Todo({
   id,
   taskProp,
@@ -14,16 +12,12 @@ function Todo({
     <ToDoCard status={statusProp}>
       <Task>{taskProp}</Task>
       <p>{id}</p>
-      {archiveProp ? null : (
-        <>
-          <Button onClick={changeStatus}>
-            {statusProp ? "complete" : "uncomplete"}
-          </Button>
-          <Button onClick={deleteOrArchive}>
-            {statusProp ? "delete" : "archive"}
-          </Button>
-        </>
-      )}
+      <Button onClick={changeStatus}>
+        {statusProp ? "complete" : "uncomplete"}
+      </Button>
+      <Button onClick={deleteOrArchive}>
+        {statusProp ? "delete" : "archive"}
+      </Button>
     </ToDoCard>
   );
 }

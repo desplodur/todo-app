@@ -3,6 +3,7 @@ import Todo from "./components/Todo";
 import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
 import { Routes, Route, NavLink } from "react-router-dom";
+import { func } from "prop-types";
 
 function App() {
   const [toDoList, setToDo] = useState(
@@ -39,9 +40,14 @@ function App() {
     localStorage.setItem("todos", JSON.stringify(toDoList));
   });
 
-  const [randomTodo, setRandomTodo] = useState(
-    toDoList[Math.floor(Math.random() * toDoList.length)]
-  );
+  const [randomTodo, setRandomTodo] = useState(randomTodoFunction());
+
+  function randomTodoFunction() {
+    const filteredArray = toDoList.filter((todo) => {
+      return todo.isArchived === false;
+    });
+    return filteredArray[Math.floor(Math.random() * filteredArray.length)];
+  }
 
   const createNewTodo = (event) => {
     event.preventDefault();
@@ -142,7 +148,6 @@ function App() {
             </>
           }
         />
-
         <Route
           path="/random"
           element={
@@ -150,9 +155,7 @@ function App() {
               <p>Your Random Todo is:</p>
               <button
                 onClick={() => {
-                  setRandomTodo(
-                    toDoList[Math.floor(Math.random() * toDoList.length)]
-                  );
+                  setRandomTodo(randomTodoFunction());
                 }}
               >
                 Shuffle
