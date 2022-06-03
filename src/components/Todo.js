@@ -1,16 +1,39 @@
 import styled from "styled-components";
+import { useState } from "react";
+import Form from "./Form";
+import createNewTodo from "../App";
 
-function Todo({ id, taskProp, statusProp, changeStatus, deleteOrArchive }) {
+function Todo({
+  taskProp,
+  statusProp,
+  archiveProp,
+  changeStatus,
+  deleteOrArchive,
+  createNewTodo,
+}) {
+  const [editBool, setEditBool] = useState(true);
   return (
     <ToDoCard status={statusProp}>
-      <Task>{taskProp}</Task>
-      <p>{id}</p>
-      <Button onClick={changeStatus}>
-        {statusProp ? "complete" : "uncomplete"}
-      </Button>
-      <Button onClick={deleteOrArchive}>
-        {statusProp ? "delete" : "archive"}
-      </Button>
+      {editBool ? <Task>{taskProp}</Task> : <Form />}{" "}
+      {archiveProp ? null : (
+        <>
+          <Button onClick={changeStatus}>
+            {statusProp ? "complete" : "uncomplete"}
+          </Button>
+          {statusProp ? (
+            <Button
+              onClick={() => {
+                setEditBool(!editBool);
+              }}
+            >
+              Edit
+            </Button>
+          ) : null}
+          <Button onClick={deleteOrArchive}>
+            {statusProp ? "delete" : "archive"}
+          </Button>
+        </>
+      )}
     </ToDoCard>
   );
 }
