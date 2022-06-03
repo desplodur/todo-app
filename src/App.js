@@ -35,7 +35,6 @@ function App() {
     };
     const newToDoList = [...toDoList, newTodo];
     setToDo(newToDoList);
-    console.log(newToDoList);
   };
 
   function deleteOrArchive(id) {
@@ -72,7 +71,7 @@ function App() {
           path="/"
           element={
             <>
-              <Form createNewTodo={createNewTodo} />
+              <Form initialFunction={createNewTodo} />
               {toDoList
                 .filter((todo) => !todo.isArchived)
                 .map((todo) => {
