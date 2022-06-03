@@ -1,5 +1,6 @@
 import "./App.css";
 import Todo from "./components/Todo";
+import Form from "./components/Form";
 import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
 import { Routes, Route, NavLink } from "react-router-dom";
@@ -70,11 +71,7 @@ function App() {
           path="/"
           element={
             <>
-              <form onSubmit={createNewTodo}>
-                <label>new ToDo:</label>
-                <input name="taskText" type="text"></input>
-                <button type="submit">Create a new Task</button>
-              </form>
+              <Form createNewTodo={createNewTodo} />
               {toDoList
                 .filter((todo) => !todo.isArchived)
                 .map((todo) => {

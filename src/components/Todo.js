@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useState } from "react";
 
 function Todo({
   taskProp,
@@ -7,6 +8,8 @@ function Todo({
   changeStatus,
   deleteOrArchive,
 }) {
+  const [editBool, setEditBool] = useState(true);
+  console.log(editBool);
   return (
     <ToDoCard status={statusProp}>
       <Task>{taskProp}</Task>
