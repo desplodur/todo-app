@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
+import Form from "./Form";
+import createNewTodo from "../App";
 
 function Todo({
   taskProp,
@@ -7,19 +9,26 @@ function Todo({
   archiveProp,
   changeStatus,
   deleteOrArchive,
+  createNewTodo,
 }) {
   const [editBool, setEditBool] = useState(true);
-  console.log(editBool);
   return (
     <ToDoCard status={statusProp}>
-      <Task>{taskProp}</Task>
-      <input type="text" placeholder={taskProp}></input>
+      {editBool ? <Task>{taskProp}</Task> : <Form />}{" "}
       {archiveProp ? null : (
         <>
           <Button onClick={changeStatus}>
             {statusProp ? "complete" : "uncomplete"}
           </Button>
-          {statusProp ? <Button>Edit</Button> : null}
+          {statusProp ? (
+            <Button
+              onClick={() => {
+                setEditBool(!editBool);
+              }}
+            >
+              Edit
+            </Button>
+          ) : null}
           <Button onClick={deleteOrArchive}>
             {statusProp ? "delete" : "archive"}
           </Button>

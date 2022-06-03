@@ -17,7 +17,7 @@ function App() {
 
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(toDoList));
-  }, []);
+  });
 
   const [randomTodo, setRandomTodo] = useState(randomTodoFunction());
 
@@ -35,6 +35,7 @@ function App() {
     };
     const newToDoList = [...toDoList, newTodo];
     setToDo(newToDoList);
+    console.log(newToDoList);
   };
 
   function deleteOrArchive(id) {

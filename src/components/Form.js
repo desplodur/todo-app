@@ -2,12 +2,17 @@ import styled from "styled-components";
 
 function Form({ createNewTodo }) {
   return (
-    <form onSubmit={createNewTodo}>
-      <label>new ToDo:</label>
+    <Formular onSubmit={createNewTodo}>
+      <label>ToDo:</label>
       <input name="taskText" type="text"></input>
-      <button type="submit">Create a new Task</button>
-    </form>
+      <button type="submit">Submit</button>
+    </Formular>
   );
 }
+
+const Formular = styled.form`
+  font-size: 1.5rem;
+  padding: 0em 0 1em 0;
+`;
 
 export default Form;
