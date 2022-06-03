@@ -3,50 +3,25 @@ import Todo from "./components/Todo";
 import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
 import { Routes, Route, NavLink } from "react-router-dom";
-import { func } from "prop-types";
 
 function App() {
-  const [toDoList, setToDo] = useState(
-    JSON.parse(localStorage.getItem("todos"))
+  const [toDoList, setToDo] = useState(() => {
+    const localStorageTodolist = localStorage.getItem("todos");
+    if (localStorageTodolist) {
+      return JSON.parse(localStorageTodolist);
+    } else {
+      return [];
+    }
+  });
 
-    /*[
-    {
-      id: nanoid(),
-      task: "Do React Exercise",
-      status: false,
-      isArchived: false,
-    },
-    {
-      id: nanoid(),
-      task: "Feed the dog",
-      status: true,
-      isArchived: false,
-    },
-    {
-      id: nanoid(),
-      task: "Go running",
-      status: false,
-      isArchived: false,
-    },
-    {
-      id: nanoid(),
-      task: "Cook Dinner",
-      status: true,
-      isArchived: false,
-    },
-  ]*/
-  );
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(toDoList));
-  });
+  }, []);
 
   const [randomTodo, setRandomTodo] = useState(randomTodoFunction());
 
   function randomTodoFunction() {
-    const filteredArray = toDoList.filter((todo) => {
-      return todo.isArchived === false;
-    });
-    return filteredArray[Math.floor(Math.random() * filteredArray.length)];
+    return toDoList[Math.floor(Math.random() * toDoList.length)];
   }
 
   const createNewTodo = (event) => {
@@ -160,19 +135,23 @@ function App() {
               >
                 Shuffle
               </button>
-              <Todo
-                key={randomTodo.id}
-                id={randomTodo.id}
-                taskProp={randomTodo.task}
-                statusProp={randomTodo.status}
-                archiveProp={randomTodo.isArchived}
-                changeStatus={() => {
-                  changeStatus(randomTodo.id);
-                }}
-                deleteOrArchive={() => {
-                  deleteOrArchive(randomTodo.id);
-                }}
-              />
+              {randomTodo ? (
+                <Todo
+                  key={randomTodo.id}
+                  id={randomTodo.id}
+                  taskProp={randomTodo.task}
+                  statusProp={randomTodo.status}
+                  archiveProp={randomTodo.isArchived}
+                  changeStatus={() => {
+                    changeStatus(randomTodo.id);
+                  }}
+                  deleteOrArchive={() => {
+                    deleteOrArchive(randomTodo.id);
+                  }}
+                />
+              ) : (
+                "No Todos defined"
+              )}
             </>
           }
         />
@@ -184,7 +163,13 @@ function App() {
         <NavLink className="navLink" to="/favorites">
           Favorites
         </NavLink>
-        <NavLink className="navLink" to="/random">
+        <NavLink
+          className="navLink"
+          onClick={() => {
+            setRandomTodo(randomTodoFunction());
+          }}
+          to="/random"
+        >
           Random
         </NavLink>
       </footer>
